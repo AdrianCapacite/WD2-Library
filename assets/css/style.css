@@ -1,0 +1,174 @@
+/*
+css ordering - https://9elements.com/css-rule-order/
+    - Generated Content
+        - content
+    - Position and Layout
+        - position, z-index, top, bottom, left, right, Flexbox properties, float, clear
+    - Display and Visibility
+        - display, opacity, transform
+    - Clipping
+        - overflow, clip
+    - Animation
+        - animation, transition
+    - Box Model (outside -> in)
+        - margin, box-shadow, border, border-radius, box-sizing, width, height, padding
+        - Background
+        - background, cursor
+        - Typography
+        - font, color
+*/
+* {
+    box-sizing: border-box;
+}
+/* Globals */
+/* Light mode */
+@media (prefer-color-scheme: light) {
+    :root {
+    /* Colors */
+        --color-primary: #1e1e1e;
+        --color-secondary: #f5f5f5;
+        --color-bg-primary: #f5f5f5;
+        --color-bg-secondary: #1e1e1e;
+        --color-text: #1e1e1e;
+    }
+}
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+    :root {
+    /* Colors */
+        --color-primary: #f5f5f5;
+        --color-secondary: #1e1e1e;
+        --color-bg-primary: #1e1e1e;
+        --color-bg-secondary: #f5f5f5;
+        --color-shadow: #0008;
+        --color-text: #f5f5f5;
+    }
+}
+:root {
+    /* Sizing */
+    --content-width: 1000px;
+
+    /* Typograpy */
+}
+
+/* Typography */
+
+/* Elements */
+body {
+    min-height: 100%;
+    min-width: 100%;
+}
+main {
+    width: 100%;
+    max-width: var(--content-width);
+    margin: 0 auto;
+}
+
+/**
+ * Utility Classes
+ */
+
+.large {
+    font-size: 2rem;
+}
+
+/*
+    Flex utilities
+*/
+.flex-space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Login page */
+.creds {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    overflow: hidden;
+    margin-block-start: 10vh;
+    margin-block-end: 10vh;
+    box-shadow: 0 0 10px 0 var(--color-shadow);
+    border-radius: 1rem;
+    width: 100%;
+    height: calc(100vh - 20vh);
+}
+.creds__img {
+    object-fit: cover;
+    width: 50%;
+    height: 100%;
+}
+.creds__formContainer {
+    position: relative;
+    top: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: calc(16/16rem * 250)px;
+    height: 100%;
+}
+.form__group-vertical {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+.form__group-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+}
+.form__label {
+    width: 100%;
+}
+.form__input {
+    width: 100%;
+    height: 2rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+}
+.form__input:focus {
+    outline: none;
+    border: 1px solid var(--color-secondary);
+}
+.form__button {
+    width: 100%;
+    height: 2rem;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+    cursor: pointer;
+}
+.form__button:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+}
+.form__button:focus {
+    outline: none;
+    border: 1px solid var(--color-secondary);
+}
+.form__button:active {
+    background-color: var(--color-primary);
+    color: var(--color-secondary);
+}
