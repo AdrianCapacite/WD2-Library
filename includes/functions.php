@@ -9,8 +9,9 @@
  * @param array $dbCred(hostname, username, password, database)
  * @return mysqli
  */
-function initDb($dbCred) {
-  return mysqli_connect($dbCred["hostname"], $dbCred["username"], $dbCred["password"], $dbCred["database"]) or die("Error: Unable to connect to MySQL database.");
+function initDb($dbCred):mysqli {
+  $dbConn = mysqli_connect($dbCred['hostname'], $dbCred['username'], $dbCred['password'], $dbCred['database']) or die("Could not connect to database");
+  return $dbConn;
 }
 
 /**
@@ -66,11 +67,11 @@ function login($username, $password) {
     $_SESSION['password'] = $password;
 
     mysqli_close($dbConn);
-    header("Location: ./index.php");
+    redirectTo("./index.php");
   } else {
-    $_SESSION['loginError'] = "Incorrect username or password";
+    $_SESSION['authError'] = "Incorrect username or password";
     mysqli_close($dbConn);
-    header("Location: ./login.php");
+    redirectTo("./login.php");
   }
 }
 
@@ -79,8 +80,8 @@ function login($username, $password) {
  * @return void
  */
 function logout() {
-  session_start();
   session_destroy();
+  session_start();
   header("Location: ./login.php");
 }
 
@@ -96,16 +97,28 @@ function register($username, $password) {
   $config = include('./conf/config.php');
   $dbConn = initDb($config['db']);
 
-  // Check if user already exists
+  // Check if user already exists then redirect to register.php
   $query = "SELECT 1 FROM user WHERE username = '$username'";
   $result = mysqli_query($dbConn, $query);
 
-  // If user exists then exit
   if (mysqli_num_rows($result) == 1) {
-    $_SESSION['registerError'] = "Username already exists";
-    redirectTo("register.php");
+    $_SESSION['authError'] = "Username already exists";
+    redirectTo("./register.php");
   }
 
+  // Add user to database
+  $query = "INSERT INTO user (username, password) VALUES ('$username', '$password')";
+  $result = mysqli_query($dbConn, $query);
+
+  // If user was added to database then login
+  echo "reg";
+  if ($result) {
+    $_Session['info'] = "User created successfully";
+    login($username, $password);
+  } else {
+    $_SESSION['authError'] = "Could not register user";
+    redirectTo("./register.php");
+  }
 }
 
 /**
@@ -114,8 +127,13 @@ function register($username, $password) {
  * @return boolean
  */
 function isLoggedIn() {
-  // Check if user is logged in
   if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+    // Database connection
+    $config = include('./conf/config.php');
+    // print_r($config);
+    $dbConn = initDb($config['db']);
+
+    // Check if user login details are correct in DB
     $username = $_SESSION['username'];
     $password = $_SESSION['password'];
     $query = "SELECT 1 FROM user WHERE username = '$username' AND password = '$password'";
@@ -144,6 +162,6 @@ function redirectError($errid){
   redirectTo('./error.php');
 }
 function consoleLog($message){
-  echo "<script>console.log('" . htmlentities($message) ."');</script>";
+  echo "<script>console.log('PHP: " . htmlentities($message) ."');</script>";
 }
 ?>
