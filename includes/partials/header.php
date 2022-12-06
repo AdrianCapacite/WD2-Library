@@ -50,6 +50,7 @@
 
 </head>
 <body>
-  <header><?php if ($navVisible === TRUE) include_once './includes/partials/nav.php' ?></header>
-
-
+  <header>
+    <?php if ($navVisible === TRUE)
+      include_once './includes/partials/nav.php' ?>
+  </header>
