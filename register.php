@@ -1,8 +1,8 @@
 <?php
 $pageTitle = "Login";
 $navVisible = FALSE;
+require_once './includes/loader.php';
 require_once './includes/partials/header.php';
-require_once './includes/loader.php'
 ?>
 
 <?php

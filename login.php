@@ -1,24 +1,21 @@
 <?php
 $pageTitle = "Login";
 $navVisible = FALSE;
+require_once './includes/loader.php';
 require_once './includes/partials/header.php';
-require_once './includes/loader.php'
 ?>
 
 <?php
-// Attempt to login user
+// If user is already logged in then redirect to index.php
 if (isLoggedIn()) {
   header("Location: ./");
-} else {
-  if (isset($_POST['login'])) {
-    $username = $_POST['username'] ?? null;
-    $password = $_POST['password'] ?? null;
-
-    consoleLog("Logging in user: $username");
-    login($username, $password);
-  }
 }
 
+// When user submits login form, attempt to login
+if (isset($_POST['login'])) {
+  login(dbEscapeString($_POST['username'] ?? null),
+        dbEscapeString($_POST['password'] ?? null));
+}
 ?>
 
 <main class="creds">
@@ -27,11 +24,17 @@ if (isLoggedIn()) {
     <span class="siteTitle large">Merrion Square Library</span>
     <h1 class="creds__title">Login</h1>
     <?php
-    if (isset($_SESSION['authError'])) {
-      echo "<p class='error'>" . htmlentities($_SESSION['authError']) . "</p>";
-      unset($_SESSION['authError']);
-    }
+    // If there is a redirect message, display it
+    if (isset($_SESSION['msg'])) {
+      $body = htmlentities($_SESSION['msg']['body']);
+      $type = htmlentities($_SESSION['msg']['type']);
+      unset($_SESSION['msg']);
     ?>
+      <!-- Redirect message -->
+      <div>
+        <p class="creds__msg <?php $type ?>"> <?php echo $body ?> </p>
+      </div>
+    <?php } ?>
     <form action="./login.php" method="post" class="creds__form form">
 
       <div class="form__group-vertical">
