@@ -56,10 +56,7 @@ function redirectError($errid){
  * @return void
  */
 function redirectMessage($uri, $body, $type) {
-  $_SESSION['msg'] = array(
-    'body' => $body,
-    'type' => $type
-  );
+  sessionMessage($body, $type);
   redirectTo($uri);
 }
 
@@ -90,9 +87,11 @@ function sessionMessage($body, $type = 0) {
   return;
 }
 
-function formGetKeep() {
+function formGetKeep($keys = null) {
   // Keeps keys that are used
-  $keys = array('search', 'category', 'orderby', 'order', 'offset');
+  if ($keys === null) {
+    $keys = array('search', 'category', 'orderby', 'order', 'offset', 'page');
+  }
 
   foreach($keys as $name) {
   if(!isset($_GET[$name])) {
@@ -102,6 +101,28 @@ function formGetKeep() {
   $name = htmlspecialchars($name);
   echo '<input type="hidden" name="'. $name .'" value="'. $value .'">';
 }
+}
+
+function createPagenation($total, $current) {
+  ?>
+  <form action="books.php" method="get">
+    <?php
+    formGetKeep(array('search', 'category', 'orderby', 'order', 'offset'));
+
+    // Previous button if not on first page
+    if($current > 0) {
+      echo "<button type='submit' name='page' value='". ($current - 1) ."'>Previous</button>";
+    }
+
+    // Show current and total pages
+    echo '<span>Page '. ($current + 1) .' of '. $total .'</span>';
+    // Next button if not on last page
+    if($current < $total - 1) {
+      echo "<button type='submit' name='page' value='". ($current + 1) ."'>Next</button>";
+    }
+    ?>
+  </form>
+  <?php
 }
 
 ?>

@@ -44,50 +44,6 @@ function dbEscapeString($string):string {
   return $string;
 }
 
-// ======== QUERIES ========
 
-function queryBooks($keyword, $category, $orderby, $order, $limit = 5):mysqli_result {
-  $dbConn = initDb(); // Connect database connection
-
-  // SELECT ... FROM
-  $cols = "`book`.`isbn`, `book`.`title`, `book`.`author`, `book`.`edition`, `book`.`year`, `book`.`reserved`, `category`.`details`, `user`.`username`";
-  $query = "SELECT $cols FROM book ";
-
-  // JOIN everything in book and matching on category
-  $query .= "LEFT JOIN category ON `book`.`category` = `category`.`id` ";
-
-  // JOIN everything in book and matching on reserved > user
-  $query .= "LEFT JOIN reserved ON `book`.`isbn` = `reserved`.`isbn` ";
-  $query .= "LEFT JOIN user ON `reserved`.`username` = `user`.`username` ";
-
-  // WHERE title AND category
-  $query .= "WHERE title LIKE '%$keyword%' AND category LIKE '%$category%'";
-
-  // ORDER BY
-  $query .= "ORDER BY $orderby $order LIMIT $limit";
-
-  echo $query;
-
-  $result = mysqli_query($dbConn, $query);
-  mysqli_close($dbConn);
-
-  return $result;
-}
-
-/**
- * Returns associative array of categories from database
- *
- * @return
- */
-function getCategories():mysqli_result {
-  $dbConn = initDb(); // Connect database connection
-
-  $query = "SELECT details FROM category";
-  $result = mysqli_query($dbConn, $query);
-  mysqli_close($dbConn);
-
-
-  return $result;
-}
 
 ?>
