@@ -125,4 +125,17 @@ function createPagenation($total, $current) {
   <?php
 }
 
+function showSessionMessage() {
+  if(!isset($_SESSION['msg'])) {
+    return;
+  }
+  $msg = $_SESSION['msg'];
+  unset($_SESSION['msg']);
+  ?>
+  <div class="msg-box <?php echo htmlentities($msg['type']); ?>">
+    <p><?php echo htmlentities($msg['body']); ?></p>
+  </div>
+  <?php
+}
+
 ?>

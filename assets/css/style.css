@@ -20,6 +20,15 @@ css ordering - https://9elements.com/css-rule-order/
         - background, cursor
         - Typography
         - font, color
+
+Common screen sizes - https://www.hobo-web.co.uk/best-screen-size/
+Desktop     Mobile      Tablet
+1920x1080   360x800     768x800
+1366x768    414x896     1280x800
+1536x864    360x640     810x1080
+1280x720    390x844     800x1280
+1440x900    360x780     601x962
+1600x900    393x873     962x601
 */
 /**
  * CONTENTS:
@@ -42,24 +51,32 @@ css ordering - https://9elements.com/css-rule-order/
     --accent-color-2: #F78E69;
 
     /* Message colours */
-    --info-color: #3289D0;
-    --success-color: #34B234;
-    --warning-color: #E8B130;
-    --error-color: #C91D2B;
+    --info-color-border: #3289D0;
+    --success-color-border: #34B234;
+    --warning-color-border: #E8B130;
+    --error-color-border: #C91D2B;
+
+    --info-color: #8BBCE5;
+    --success-color: #81DA81;
+    --warning-color: #F3D591;
+    --error-color: #EB707A;
+
 
     /* Dimensions */
-    --content-width: 1000px;
+    --content-width: 75rem;
+    --border-radius: 0.5rem;
 
     /* Typography */
     --font-primary: 'Roboto', sans-serif;
-    --font-secondary:
+    --font-secondary: 'Roboto;', sans-serif;
 }
 
 /******** GLOBAL ********/
 * {
+    box-sizing: border-box;
 
     /* Debug */
-    outline: 1px solid red;
+    /* outline: 1px solid red; */
 }
 *:hover {
     /* Debug */
@@ -79,28 +96,81 @@ p {
     color: var(--text-color);
 }
 
+/******** ELEMENTS ********/
+body {
+    min-height: 100%;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+header {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+main {
+    margin-inline: auto;
+    max-width: var(--content-width);
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
+footer {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+}
+
 /******** UTILITIES ********/
 
 /******** LAYOUTS ********/
-main {
-    width: 100%;
-    max-width: var(--content-width);
-    margin: 0 auto;
+/* Body */
+body.noscroll {
+    position: relative;
+    overflow: hidden;
+    padding: 1px;
+    height: 100vh;
+
 }
 
 /******** COMPONENTS ********/
 /* Navigation */
 
 /* END Navigation */
+
+/* User Message */
+.msg-box {
+    padding: 0.5rem;
+    border-radius: var(--border-radius);
+}
+.msg-box p {
+    margin: 0;
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+.info {
+    background-color: var(--info-color);
+    outline: 1px solid var(--info-color-border);
+}
+.success {
+    background-color: var(--success-color);
+    outline: 1px solid var(--success-color-border);
+}
+.warning {
+    background-color: var(--warning-color);
+    outline: 1px solid var(--warning-color-border);
+}
+.error {
+    background-color: var(--error-color);
+    outline: 1px solid var(--error-color-border);
+}
+/* END User Message */
 /******** PAGE SPECIFIC ********/
 /* Login & register */
 .creds {
+    position: relative;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     overflow: hidden;
     margin-block-start: 10vh;
-    margin-block-end: 10vh;
+    margin-block-end: auto;
     box-shadow: 0 0 10px 0 var(--color-shadow);
     border-radius: 1rem;
     width: 100%;
@@ -129,7 +199,10 @@ main {
     width: calc(16/16rem * 250)px;
     height: 100%;
 }
-.form__group-vertical {
+.form div {
+    margin: 0.5rem 0;
+}
+.form__group--vertical {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -137,7 +210,7 @@ main {
     width: 100%;
     height: 100%;
 }
-.form__group-horizontal {
+.form__group--horizontal {
     display: flex;
     flex-direction: row;
     align-items: left;
