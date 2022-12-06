@@ -21,8 +21,43 @@ css ordering - https://9elements.com/css-rule-order/
         - Typography
         - font, color
 */
+/**
+ * CONTENTS:
+ *  - VARIABLES
+ *  - GLOBAL
+ *  - TYPOGRAPHY
+ *  - UTILITIES
+ *  - LAYOUT
+ *  - COMPONENTS
+ *  - PAGE SPECIFIC
+ */
+
+/******** VARIABLES ********/
+:root {
+    /* Colors */
+    --primary-color: #F8F8F8;
+    --secondary-color: #181818;
+    --text-color: #181818;
+    --accent-color: #FF5722;
+    --accent-color-2: #F78E69;
+
+    /* Message colours */
+    --info-color: #3289D0;
+    --success-color: #34B234;
+    --warning-color: #E8B130;
+    --error-color: #C91D2B;
+
+    /* Dimensions */
+    --content-width: 1000px;
+
+    /* Typography */
+    --font-primary: 'Roboto', sans-serif;
+    --font-secondary:
+}
+
+/******** GLOBAL ********/
 * {
-    box-sizing: border-box;
+
     /* Debug */
     outline: 1px solid red;
 }
@@ -31,67 +66,34 @@ css ordering - https://9elements.com/css-rule-order/
     box-shadow: 0 0 8px 4px rgba(0, 0, 255, 0.25);
 }
 
-/* Globals */
-/* Light mode */
-@media (prefer-color-scheme: light) {
-    :root {
-    /* Colors */
-        --color-primary: #1e1e1e;
-        --color-secondary: #f5f5f5;
-        --color-bg-primary: #f5f5f5;
-        --color-bg-secondary: #1e1e1e;
-        --color-text: #1e1e1e;
-    }
-}
-/* Dark mode */
-@media (prefers-color-scheme: dark) {
-    :root {
-    /* Colors */
-        --color-primary: #f5f5f5;
-        --color-secondary: #1e1e1e;
-        --color-bg-primary: #1e1e1e;
-        --color-bg-secondary: #f5f5f5;
-        --color-shadow: #0008;
-        --color-text: #f5f5f5;
-    }
-}
-:root {
-    /* Sizing */
-    --content-width: 1000px;
-
-    /* Typograpy */
+/******** TYPOGRAPHY ********/
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-primary);
+    color: var(--text-color);
 }
 
-/* Typography */
-
-/* Elements */
-body {
-    min-height: 100%;
-    min-width: 100%;
+/* Paragraphs */
+p {
+    font-family: var(--font-secondary);
+    color: var(--text-color);
 }
+
+/******** UTILITIES ********/
+
+/******** LAYOUTS ********/
 main {
     width: 100%;
     max-width: var(--content-width);
     margin: 0 auto;
 }
 
-/**
- * Utility Classes
- */
+/******** COMPONENTS ********/
+/* Navigation */
 
-.large {
-    font-size: 2rem;
-}
-
-/*
-    Flex utilities
-*/
-.flex-space-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-/* Login page */
+/* END Navigation */
+/******** PAGE SPECIFIC ********/
+/* Login & register */
 .creds {
     display: flex;
     flex-direction: row;
@@ -183,3 +185,4 @@ main {
     background-color: var(--color-primary);
     color: var(--color-secondary);
 }
+/* END login & register */
