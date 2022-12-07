@@ -1,7 +1,7 @@
 <?php
 $pageTitle = "Login";
 $navVisible = false;
-// $pageScroll = false;
+$bodyClass = "accent";
 require_once './includes/loader.php';
 
 // If user is already logged in then redirect to index.php
@@ -29,11 +29,11 @@ if (isset($_POST['login'])) {
       <form action="login.php" method="post" class="auth__form">
         <div class="form__group">
           <label for="username">Username</label>
-          <input type="text" name="username" id="username" required>
+          <input type="text" name="username" id="username" placeholder="Username" required>
         </div>
         <div class="form__group">
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" required>
+          <input type="password" name="password" id="password" placeholder="Password" required>
         </div>
         <div class="form_group form__group">
           <p>Not registered? <a href="register.php">Register here.</a></p>

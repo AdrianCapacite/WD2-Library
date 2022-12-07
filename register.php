@@ -1,6 +1,7 @@
 <?php
 $pageTitle = "Login";
 $navVisible = FALSE;
+$bodyClass = "accent";
 require_once './includes/loader.php';
 require_once './includes/partials/header.php';
 ?>
@@ -31,14 +32,14 @@ if (isLoggedIn()) {
       <form action="register.php" method="post" class="auth__form">
         <div class="form__group">
           <label for="username">Username</label>
-          <input type="text" name="username" id="username" required>
+          <input type="text" name="username" id="username" placeholder="Username" required>
         </div>
         <div class="form__group">
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" required>
+          <input type="password" name="password" id="password" placeholder="Password" required>
         </div>
         <div class="form_group form__group">
-          <p>Already registered? <a href="register.php">Login here.</a></p>
+          <p>Already registered? <a href="login.php">Login here.</a></p>
           <button type="submit" name="register">Register</button>
         </div>
       </form>
