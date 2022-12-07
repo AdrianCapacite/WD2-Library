@@ -47,7 +47,7 @@ Desktop     Mobile      Tablet
     --primary-color: #F8F8F8;
     --secondary-color: #181818;
     --text-color: #181818;
-    --accent-color: #FF5722;
+    --accent-color: #601F2D;
     --accent-color-2: #F78E69;
 
     /* Message colours */
@@ -63,7 +63,7 @@ Desktop     Mobile      Tablet
 
 
     /* Dimensions */
-    --content-width: 75rem;
+    --content-width: 70rem;
     --border-radius: 0.5rem;
 
     /* Typography */
@@ -73,7 +73,8 @@ Desktop     Mobile      Tablet
 
 /******** GLOBAL ********/
 * {
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
+    box-sizing:border-box;
 
     /* Debug */
     /* outline: 1px solid red; */
@@ -98,29 +99,52 @@ p {
 
 /******** ELEMENTS ********/
 body {
-    min-height: 100%;
-    background-color: var(--primary-color);
-    color: var(--text-color);
+    min-height: 100vh;
 }
 header {
-    background-color: var(--secondary-color);
+    grid-area: header;
+    background-color: var(--accent-color);
     color: var(--primary-color);
 }
 main {
+    grid-area: main;
     margin-inline: auto;
     max-width: var(--content-width);
     background-color: var(--primary-color);
     color: var(--text-color);
 }
 footer {
-    background-color: var(--secondary-color);
-    color: var(--primary-color);
+    grid-area: footer;
+    /* background-color: var(--secondary-color); */
+    /* color: var(--primary-color); */
+}
+footer > div {
+    margin-inline: auto;
+    max-width: var(--content-width);
+    min-height: 100%;
 }
 
 /******** UTILITIES ********/
+.horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 
 /******** LAYOUTS ********/
 /* Body */
+.main-container {
+    display: grid;
+    grid-template-rows: 4rem auto 4rem;
+    grid-template-areas:
+        "header "
+        "main"
+        "footer";
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+}
 body.noscroll {
     position: relative;
     overflow: hidden;
@@ -131,7 +155,19 @@ body.noscroll {
 
 /******** COMPONENTS ********/
 /* Navigation */
-
+nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background-color: var(--accent-color);
+    color: var(--primary-color);
+}
+nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
 /* END Navigation */
 
 /* User Message */
@@ -162,100 +198,49 @@ body.noscroll {
 }
 /* END User Message */
 /******** PAGE SPECIFIC ********/
-/* Login & register */
-.creds {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    overflow: hidden;
-    margin-block-start: 10vh;
-    margin-block-end: auto;
-    box-shadow: 0 0 10px 0 var(--color-shadow);
-    border-radius: 1rem;
-    width: 100%;
-    height: calc(100vh - 20vh);
-}
-.creds__img {
-    object-fit: cover;
-    width: 50%;
-    height: 100%;
-}
-.creds__formContainer {
-    position: relative;
-    top: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 50%;
-
-}
+/* Form */
 .form {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: calc(16/16rem * 250)px;
+}
+.form__group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    margin-block: 1rem;
+}
+.form__group label {
+    margin-block-end: 0.5rem;
+}
+.form__group--horizontal {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Login & register */
+.auth {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    box-shadow: 0 0 1rem 0.25rem rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
     height: 100%;
+
 }
-.form div {
-    margin: 0.5rem 0;
+.auth > img {
+    object-fit: cover;
+    width: 50%;
 }
-.form__group--vertical {
+.auth > div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: center;
+    width: 50%;
     height: 100%;
 }
-.form__group--horizontal {
-    display: flex;
-    flex-direction: row;
-    align-items: left;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
-}
-.form__label {
-    width: 100%;
-}
-.form__input {
-    width: 100%;
-    height: 2rem;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    border: 1px solid var(--color-primary);
-    border-radius: 0.5rem;
-    font-size: 1rem;
-}
-.form__input:focus {
-    outline: none;
-    border: 1px solid var(--color-secondary);
-}
-.form__button {
-    width: 100%;
-    height: 2rem;
-    margin: 0.5rem 0;
-    padding: 0.5rem;
-    border: 1px solid var(--color-primary);
-    border-radius: 0.5rem;
-    font-size: 1rem;
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-    cursor: pointer;
-}
-.form__button:hover {
-    background-color: var(--color-secondary);
-    color: var(--color-primary);
-}
-.form__button:focus {
-    outline: none;
-    border: 1px solid var(--color-secondary);
-}
-.form__button:active {
-    background-color: var(--color-primary);
-    color: var(--color-secondary);
-}
-/* END login & register */

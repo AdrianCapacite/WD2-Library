@@ -53,6 +53,7 @@ function getFullTitle() {
 
 </head>
 <body class="<?php echo $pageScroll === false ? 'noscroll' : ''?>">
+<div class="main-container">
   <?php if ($navVisible === TRUE) { ?>
   <header>
       <?php include_once './includes/partials/nav.php' ?>

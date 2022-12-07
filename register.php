@@ -20,33 +20,30 @@ if (isLoggedIn()) {
 
 ?>
 
-<main class="creds">
-  <img src="./assets/images/Merrion-Square-EGHN-30-1-1200x800.jpg" alt="Image of Merrion Square" class="creds__img">
-  <div class="creds__formContainer">
-    <span class="siteTitle large">Merrion Square Library</span>
-    <h1 class="creds__title">Register</h1>
-    <?php
-    if (isset($_SESSION['authError'])) {
-      echo "<p class='error'>" . htmlentities($_SESSION['authError']) . "</p>";
-      unset($_SESSION['authError']);
-    }
-    ?>
-    <form action="./register.php" method="post" class="creds__form form">
-
-      <div class="form__group-vertical">
-        <label for="username" class="form__label">Username</label>
-        <input type="text" name="username" id="username" placeholder="Username" required class="form__input">
-      </div>
-      <div class="form__group-vertical">
-        <label for="password" class="form__label">Password</label>
-        <input type="password" name="password" id="password" placeholder="Password" required class="form__input">
-      </div>
-      <div class="form__group-horizontal">
-        <span>Already registerd? <a href="./login.php">Login here</a></span>
-        <input type="submit" name="register" value="Register" class="form__submit">
-      </div>
-    </form>
-  </div>
+<main>
+  <!-- Register prompt -->
+  <section class="auth">
+    <img src="./assets/images/Merrion-Square-EGHN-30-1-1200x800.jpg" alt="" class="auth__img">
+    <div>
+      <h1>Merrion Square Library</h1>
+      <h2>Register</h2>
+      <?php showSessionMessage(); ?>
+      <form action="register.php" method="post" class="auth__form">
+        <div class="form__group">
+          <label for="username">Username</label>
+          <input type="text" name="username" id="username" required>
+        </div>
+        <div class="form__group">
+          <label for="password">Password</label>
+          <input type="password" name="password" id="password" required>
+        </div>
+        <div class="form_group form__group">
+          <p>Already registered? <a href="register.php">Login here.</a></p>
+          <button type="submit" name="register">Register</button>
+        </div>
+      </form>
+    </div>
+  </section>
 </main>
 
 <?php
