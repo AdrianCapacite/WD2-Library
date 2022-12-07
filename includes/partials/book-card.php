@@ -1,7 +1,9 @@
+<?php
+?>
 <article class="book">
   <div class="book__img">
     <img src="https://picsum.photos/seed/<?php echo htmlentities($book['isbn']) ?>/333/500.jpg" alt="Book cover">
-  </div>
+  </div><!--.book__img-->
   <div class="book__details">
     <div class="book__details__row">
       <h1 class="book__title">
@@ -29,16 +31,33 @@
     <div class="book__details__row">
       <p class="book__category">
         Category:
-        <?php echo htmlentities($book['details']) ?>
+        <?php echo htmlentities($book['category']) ?>
       </p>
     </div>
-  </div>
-  <form method="post" action="./books.php" class="book__reserve">
-    <?php formGetKeep(); ?>
-    <button <?php if ($book['reserved'] === 'Y') echo 'disabled' ?>
-        type="submit" name="reserve"
-        value="<?php echo htmlentities($book['isbn']); ?>">
-      Reserve Book
-    </button>
-  </form>
+    <div class="book__reserve">
+      <p class="book__reserve__details">
+        <?php
+        if ($book['reserved'] === 'Y') {
+        echo "Reserved by " . getReservedBy($book) . "<br>on ". $book['reserveddate'];
+        }
+        ?>
+      </p>
+      <form action="./books.php" method="post">
+        <?php
+        formGetKeep();
+        switch (getBookStatus($book)) {
+          case 0:
+            echo '<button type="submit" name="reserve" value="'.htmlentities($book['isbn']).'">Reserve Book</button>';
+            break;
+          case 1:
+            echo '<button disabled type="submit" name="reserve" value="'.htmlentities($book['isbn']).'">Unavailable</button>';
+            break;
+          case 2:
+            echo '<button type="submit" name="unreserve" value="'.htmlentities($book['isbn']).'">Unreserve Book</button>';
+            break;
+        }
+        ?>
+      </form>
+    </div><!--.book__reserve-->
+  </div><!--.book__details-->
 </article>

@@ -103,9 +103,9 @@ function formGetKeep($keys = null) {
 }
 }
 
-function createPagenation($total, $current) {
+function createPagination($page, $total, $current) {
   ?>
-  <form action="books.php" method="get">
+  <form action="<?php echo htmlentities($page) ?>" method="get" class="pagination">
     <?php
     formGetKeep(array('search', 'category', 'orderby', 'order', 'offset'));
 
@@ -117,7 +117,7 @@ function createPagenation($total, $current) {
     // Show current and total pages
     echo '<span>Page '. ($current + 1) .' of '. $total .'</span>';
     // Next button if not on last page
-    if($current < $total - 1) {
+    if ($current < $total - 1) {
       echo "<button type='submit' name='page' value='". ($current + 1) ."'>Next</button>";
     }
     ?>
@@ -125,8 +125,17 @@ function createPagenation($total, $current) {
   <?php
 }
 
+function createQueryCount($total, $offset, $limit) {
+  $start = $offset + 1;
+  $end = $offset + $limit;
+  if ($end > $total) {
+    $end = $total;
+  }
+  echo '<p>Showing '. $start .'-'. $end .' of '. $total .' results</p>';
+}
+
 function showSessionMessage() {
-  if(!isset($_SESSION['msg'])) {
+  if (!isset($_SESSION['msg'])) {
     return;
   }
   $msg = $_SESSION['msg'];
@@ -136,6 +145,41 @@ function showSessionMessage() {
     <p><?php echo htmlentities($msg['body']); ?></p>
   </div>
   <?php
+}
+
+// Book functions
+/**
+ * Reads an associative array describing a book and returns a string describing the status
+ *
+ * Returns: 0 = Available, 1 = Reserved, 2 = Reserved by user
+ *
+ * @param [type] $book
+ * @return integer
+ */
+function getBookStatus($book):int {
+  if ($book['reserved'] == 'N') {
+    return 0; // Available
+  }
+
+  // It is implied reserved == 'Y' from here
+  if ($book['reservedby'] == $_SESSION['account']['username']) {
+    return 2; // Reserved by user
+  }
+
+  return 1;
+}
+
+function getReservedBy($book):string | null {
+  if ($book['reserved'] == 'N') {
+    return '';
+  }
+
+  // It is implied reserved == 'Y' from here
+  if ($book['reservedby'] == $_SESSION['account']['username']) {
+    return 'You';
+  }
+
+  return $book['reservedby'];
 }
 
 ?>

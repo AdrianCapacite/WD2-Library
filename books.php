@@ -8,7 +8,8 @@ if (!isLoggedIn()) {
   header("Location: ./login.php");
 }
 
-// Check if field is empty or not set and replace with default value
+// get search parameters
+// if doesn't exist, set to default
 $search = $_GET['search'] ?? '';
 $category = $_GET['category'] ?? '';
 $orderby = $_GET['orderby'] ?? 'title';
@@ -16,19 +17,43 @@ $order = $_GET['order'] ?? 'ASC';
 $limit = $_GET['limit'] ?? 5;
 $page = $_GET['page'] ?? 0;
 
-// Reserve book
+// display search term
+function displaySearchTerm() {
+  global $search, $category;
+  $term = ($search === '') ? 'everything' : $search;
+  $category = ($category === '') ? 'all' : $category;
+
+  echo "search results for <em>" . htmlentities($term) . "</em>";
+  echo " in <em>" . htmlentities($category) . "</em> categories";
+}
+
+// reserve book
 if (isset($_POST['reserve'])) {
-  echo "Reserve book";
   $isbn = dbEscapeString($_POST['reserve']);
   $username = $_SESSION['account']['username'];
 
   $result = reserveBook($isbn, $username);
   if ($result) {
-    redirectMessage("./books.php", "Book reserved", 1);
+    redirectMessage("./books.php", "Book reserved.", 1);
   } else {
-    redirectMessage("./books.php", "Book could not be reserved", 3);
+    redirectMessage("./books.php", "Book could not be reserved.", 3);
   }
 }
+
+// unreserve book
+if (isset($_POST['unreserve'])) {
+  echo "unreserve book";
+  $isbn = dbEscapeString($_POST['unreserve']);
+  $username = $_SESSION['account']['username'];
+
+  $result = unreserveBook($isbn, $username);
+  if ($result) {
+    redirectMessage("./books.php", "Book unreserved", 1);
+  } else {
+    redirectMessage("./books.php", "Book could not be unreserved", 3);
+  }
+}
+
 
 // ==== DATABASE QUERIES ====
 $resultBooks = array(
@@ -53,6 +78,7 @@ $resultBooks = array(
   )
   );
 
+
 require_once './includes/partials/header.php';
 ?>
 
@@ -62,8 +88,7 @@ require_once './includes/partials/header.php';
   <!-- Book Query -->
   <section>
     <h2>
-      Search Results for <em><?php echo htmlentities(($search === '') ? 'Everything' : $search) ?></em>
-      in <em><?php echo htmlentities(($category === '') ? 'All' : $category) ?></em> categories
+      <?php displaySearchTerm() ?>
     </h2>
     <div class="book-query__search">
       <!-- Keyword and category search -->
@@ -83,13 +108,15 @@ require_once './includes/partials/header.php';
         </form>
       </div>
 
-      <!-- Pagnation -->
-      <?php createPagenation(
-        ceil($resultBooks['totalCount'] / $limit),$page
+      <!-- pagnation -->
+      <?php createPagination(
+        "./books.php",
+        ceil($resultBooks['totalCount'] / $limit),
+        $page
       ) ?>
       <!-- Results -->
       <p class="book-query__count">
-        Showing <?php echo $resultBooks['shownCount'] + $page * 5 ?> of <?php echo $resultBooks['totalCount'] ?> results
+        <?php createQueryCount($resultBooks['totalCount'], $page*5, $limit) ?>
       </p>
       <div class="book-query__results">
         <?php
@@ -98,9 +125,11 @@ require_once './includes/partials/header.php';
         }
         ?>
 
-        <!-- Pagnation -->
-        <?php createPagenation(
-          ceil($resultBooks['totalCount'] / $limit),$page
+        <!-- pagnation -->
+        <?php createPagination(
+          "./books.php",
+          ceil($resultBooks['totalCount'] / $limit),
+          $page
         ) ?>
       </div>
       <!-- END of Results -->
