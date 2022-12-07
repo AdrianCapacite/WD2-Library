@@ -62,6 +62,9 @@ function getFullTitle() {
 <div class="main-container <?php echo htmlentities($mainContainerClass); ?>">
   <?php if ($navVisible === TRUE) { ?>
   <header>
-      <?php include_once './includes/partials/nav.php' ?>
+      <?php
+      include_once './includes/partials/nav.php';
+      showSessionMessage();
+      ?>
   </header>
   <?php } ?>
