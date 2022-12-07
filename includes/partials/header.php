@@ -2,8 +2,11 @@
 if (!isset($navVisible)) {
   $navVisible = true;
 }
-if (!isset($pageScroll)) {
-  $pageScroll = true;
+if (!isset($bodyClass)) {
+  $bodyClass = "";
+}
+if (!isset($mainContainerClass)) {
+  $mainContainerClass = "";
 }
 /**
  * Sets the page title
@@ -49,11 +52,14 @@ function getFullTitle() {
   <!-- Styles -->
   <link rel="stylesheet" href="./assets/css/normalize.css">
   <link rel="stylesheet" href="./assets/css/style.css">
+
+  <!-- Scripts -->
   <script src="https://kit.fontawesome.com/87e2e714ed.js" crossorigin="anonymous"></script>
+  <script src="./assets/js/main.js" defer></script>
 
 </head>
-<body class="<?php echo $pageScroll === false ? 'noscroll' : ''?>">
-<div class="main-container">
+<body class="<?php echo htmlentities($bodyClass);?>">
+<div class="main-container <?php echo htmlentities($mainContainerClass); ?>">
   <?php if ($navVisible === TRUE) { ?>
   <header>
       <?php include_once './includes/partials/nav.php' ?>
