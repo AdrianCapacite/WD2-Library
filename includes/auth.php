@@ -116,7 +116,7 @@ function isLoggedIn() {
  * @return 2 user exists and password is correct
  */
 function verifyUser($username, $password = null) {
-  $dbConn = initDb(getConfig('db')); // Connect to database
+  $dbConn = initDb(); // Connect to database
 
   // Check if user does not exist, return 0
   $query = "SELECT 1 FROM user WHERE username = '$username'";

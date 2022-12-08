@@ -9,7 +9,7 @@
  * @param string $property
  * @return string
  */
-function getConfig($property) {
+function getConfig($property):array {
   return (include('./conf/config.php'))[$property];
 }
 
