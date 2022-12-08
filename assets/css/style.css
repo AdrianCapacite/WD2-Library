@@ -2,34 +2,7 @@
  * Web Development 2 project: Library System
  * Author: Adrian Thomas Capacite
  */
-/*
-css ordering - https://9elements.com/css-rule-order/
-    - Generated Content
-        - content
-    - Position and Layout
-        - position, z-index, top, bottom, left, right, Flexbox properties, float, clear
-    - Display and Visibility
-        - display, opacity, transform
-    - Clipping
-        - overflow, clip
-    - Animation
-        - animation, transition
-    - Box Model (outside -> in)
-        - margin, box-shadow, border, border-radius, box-sizing, width, height, padding
-        - Background
-        - background, cursor
-        - Typography
-        - font, color
 
-Common screen sizes - https://www.hobo-web.co.uk/best-screen-size/
-Desktop     Mobile      Tablet
-1920x1080   360x800     768x800
-1366x768    414x896     1280x800
-1536x864    360x640     810x1080
-1280x720    390x844     800x1280
-1440x900    360x780     601x962
-1600x900    393x873     962x601
-*/
 /**
  * CONTENTS:
  *  - VARIABLES
@@ -100,19 +73,24 @@ Desktop     Mobile      Tablet
 /* Headers */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-title);
-    color: var(--text-color);
+    color: inherit;
 }
 
 /* Paragraphs */
 p, span, a {
     font-family: var(--font-primary);
-    color: var(--text-color);
+    color: inherit;
 }
 
 /* Form */
 input, textarea, select, button, label {
     font-family: var(--font-primary);
-    color: var(--text-color);
+    color: inherit;
+}
+
+/* Misc */
+.large {
+    font-size: 1.5rem;
 }
 
 /******** ELEMENTS ********/
@@ -134,13 +112,13 @@ main {
 }
 footer {
     grid-area: footer;
-    /* background-color: var(--secondary-color); */
-    /* color: var(--primary-color); */
 }
 footer > div {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
     margin-inline: auto;
     max-width: var(--content-width);
-    min-height: 100%;
 }
 
 
@@ -148,9 +126,10 @@ footer > div {
 /* Body */
 .main-container {
     display: grid;
-    grid-template-rows: 4rem auto 4rem;
+    grid-template-rows: 4rem min-content auto minmax(4rem, min-content);
     grid-template-areas:
-        "header "
+        "header"
+        "title"
         "main"
         "footer";
     flex-direction: column;
@@ -158,13 +137,8 @@ footer > div {
     background-color: inherit;
     color: inherit;
 }
-body.noscroll {
-    position: relative;
-    overflow: hidden;
-    padding: 1px;
-    height: 100vh;
 
-}
+
 
 /******** COMPONENTS ********/
 /* Dropdown */
@@ -201,17 +175,18 @@ header {
     background-color: var(--accent-color);
     color: var(--primary-color);
 }
-nav {
+header nav {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
     margin-inline: auto;
     padding: 0 1rem;
     height: 100%;
     max-width: var(--content-width);
 }
-nav a, nav label, nav p{
+header nav a, header nav label, header nav p{
     cursor: pointer;
     margin: 0.5rem;
     padding: 0.5rem;
@@ -219,31 +194,59 @@ nav a, nav label, nav p{
     text-decoration: none;
     width: max-content;
 }
-nav a:hover, nav label:hover {
+header nav a:hover, header nav label:hover {
     color: var(--accent-color-2);
 }
-nav ul {
+header nav ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
-nav li {
+header nav li {
     margin-block: 0.5rem;
 }
-nav .dropdown__content {
+header nav .dropdown__content {
     right: 0;
     transform: translateY(1.40rem);
     padding: .5rem;
     box-shadow: var(--shadow);
     background-color: var(--accent-color);
 }
-nav .dropdown__content * {
+header nav .dropdown__content * {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 20ch;
     color: var(--primary-color);
 }
+
+footer nav ul {
+    list-style: non;
+    margin: 0;
+    padding: 0;
+}
+footer nav li {
+    display: block;
+    margin: 0.5rem;
+}
 /* END Navigation */
+
+/* Title */
+.title {
+    grid-area: title;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('../images/Merrion-Square-EGHN-30-1-1200x800.jpg');
+    color: var(--primary-color);
+}
+.title h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 1rem;
+}
+/* END Title */
 
 /* User Message */
 .msg-box {
@@ -418,19 +421,22 @@ form button:disabled {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     margin-block: 1rem;
 }
-.search .search__input:first-child {
-    border-end-end-radius: 0px;
-    border-start-end-radius: 0px;
+.search .search__input {
+    border-radius: 0;
 }
-.search .search__input + .search__input {
+.search .search__input:first-child {
+    border-end-start-radius: var(--border-radius);
+    border-start-start-radius: var(--border-radius);
+}
+.search .search__input __input {
     border-radius: 0;
 }
 .search .search__input:last-child {
-    border-start-start-radius: 0px;
-    border-end-start-radius: 0px;
+    border-start-end-radius: var(--border-radius);
+    border-end-end-radius: var(--border-radius);
 }
 
 /* Member details */
