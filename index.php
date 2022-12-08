@@ -12,6 +12,10 @@ if (!isLoggedIn()) {
 require_once './includes/partials/header.php';
 ?>
 
+<main>
+  <p class="large">Welcome back! <br> <?php echo htmlentities($_SESSION['account']['username']) ?></p>
+</main>
+
 <?php
 require_once './includes/partials/footer.php';
 ?>
