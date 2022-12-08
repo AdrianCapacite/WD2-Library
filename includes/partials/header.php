@@ -58,7 +58,7 @@ function getFullTitle() {
 
 
   <!-- Scripts -->
-  <script src="https://kit.fontawesome.com/87e2e714ed.js" crossorigin="anonymous"></script>
+  <!-- <script src="https://kit.fontawesome.com/87e2e714ed.js" crossorigin="anonymous"></script> -->
   <script src="./assets/js/main.js"></script>
 
 </head>
@@ -71,4 +71,7 @@ function getFullTitle() {
       showSessionMessage();
       ?>
   </header>
+  <section class="title">
+    <h1>Merrion Square Library</h1>
+  </section>
   <?php } ?>

@@ -231,6 +231,7 @@ function updatePassword($username, $old, $new):int {
 
   mysqli_close($dbConn);
   if ($result == true) {
+    $_SESSION['account']['password'] = $new;
     return true;
   } else {
     return false;

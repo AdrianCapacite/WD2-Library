@@ -18,8 +18,6 @@
  */
 function login($username, $password) {
   if (verifyUser($username, $password) === 2) {
-    // $_SESSION['username'] = $username;
-    // $_SESSION['password'] = $password;
     $_SESSION['account'] = array('username' => $username,
                                  'password' => $password);
     redirectTo("./index.php");
@@ -60,7 +58,7 @@ function register($username, $password) {
   }
 
   // Add user to database
-  $dbConn = initDb(getConfig('db')); // Connect to database
+  $dbConn = initDb(); // Connect to database
   $query = "INSERT INTO user (username, password) VALUES ('$username', '$password')";
   $result = mysqli_query($dbConn, $query);
   mysqli_close($dbConn);
@@ -68,7 +66,7 @@ function register($username, $password) {
   // If the user is added sucessfully then login, else stay in register
   if ($result) {
     // $_SESSION['info'] = "User added sucessfully";
-    sessionMessage("User added sucessfully", 1);
+    sessionMessage("User added sucessfully, please update your membership details", 1);
     login($username, $password);
     return;
   } else {

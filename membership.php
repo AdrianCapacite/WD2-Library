@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Home";
+$pageTitle = "Membership Details";
 $navVisible = true;
 require_once './includes/loader.php';
 require_once './includes/partials/header.php';
@@ -38,7 +38,7 @@ if (isset($_POST['update-password'])) {
   // Update user password
   $result = updatePassword($_SESSION['account']['username'], $currentPassword, $newPassword);
 
-  if ($result === true) {
+  if ($result) {
     redirectMessage("./membership.php", "Password updated.", 1);
   } else {
     redirectMessage("./membership.php", "Password could not be updated.", 3);
@@ -51,7 +51,6 @@ require_once './includes/partials/header.php';
 ?>
 
 <main>
-  <h1>Merrion Square Library</h1>
   <!-- Member details -->
   <section class="details">
     <h2>Member Details</h2>
