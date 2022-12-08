@@ -95,21 +95,7 @@ require_once './includes/partials/header.php';
     </h2>
     <div class="book-query__search">
       <!-- Keyword and category search -->
-      <div>
-        <form action="books.php" method="get">
-          <input type="text" name="search" id="search"
-              placeholder="Search title or author" value="<?php echo htmlentities($search) ?>">
-          <select name="category" id="category">
-            <option value="">All</option>
-            <?php
-            foreach (getCategories() as $category) {
-                echo "<option value='$category'>$category</option>";
-            }
-            ?>
-          </select>
-          <input type="submit" value="Search">
-        </form>
-      </div>
+      <?php include './includes/partials/book-search.php' ?>
 
       <!-- pagnation -->
       <?php createPagination(

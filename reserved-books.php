@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Book Search";
+$pageTitle = "Reserved Book";
 $navVisible = true;
 require_once './includes/loader.php';
 require_once './includes/partials/header.php';
@@ -91,7 +91,6 @@ require_once './includes/partials/header.php';
 ?>
 
 <main>
-  <h1>Merrion Square Library</h1>
 
   <!-- Book Query -->
   <section>
