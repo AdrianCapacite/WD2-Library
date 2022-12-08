@@ -44,7 +44,7 @@ function getFullTitle() {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title><?php echo getFullTitle($pageTitle); ?></title>
+  <title><?php echo getFullTitle(); ?></title>
   <!-- Meta -->
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,7 +53,7 @@ function getFullTitle() {
   <!-- Normalize: Make elements consitent between different browsers -->
   <!-- https://github.com/necolas/normalize.css -->
   <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
-  
+
   <link rel="stylesheet" href="./assets/css/style.css">
 
 

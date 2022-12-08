@@ -26,7 +26,7 @@ function currentPage() {
  * Uses header("Location: ...") to redirect to a page
  *
  * @param string $uri
- * @param msg $msg (optional) Message to display on redirected page
+ * @param string $msg (optional) Message to display on redirected page
  * @return void
  */
 function redirectTo($uri){

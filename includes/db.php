@@ -11,7 +11,7 @@
  * @param array $dbCred(hostname, username, password, database)
  * @return mysqli
  */
-function initDb($dbCred = null):mysqli {
+function initDb($dbCred = null):bool|mysqli {
   if ($dbCred == null) {
     $dbCred = getConfig('db');
   }
@@ -23,7 +23,8 @@ function initDb($dbCred = null):mysqli {
  * Try connect to database and redirect to error page if failed
  */
 function checkDatabaseConnection() {
-  if (!initDb()) {
+  $dbConn = initDb();
+  if (!$dbConn) {
     redirectError("Database connection failed");
     header("Location: ./error.php");
   } else {
