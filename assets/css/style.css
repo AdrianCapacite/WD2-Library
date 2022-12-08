@@ -211,12 +211,13 @@ nav {
     height: 100%;
     max-width: var(--content-width);
 }
-nav a, nav label{
+nav a, nav label, nav p{
     cursor: pointer;
     margin: 0.5rem;
     padding: 0.5rem;
     color: var(--primary-color);
     text-decoration: none;
+    width: max-content;
 }
 nav a:hover, nav label:hover {
     color: var(--accent-color-2);
@@ -235,6 +236,12 @@ nav .dropdown__content {
     padding: .5rem;
     box-shadow: var(--shadow);
     background-color: var(--accent-color);
+}
+nav .dropdown__content * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 20ch;
+    color: var(--primary-color);
 }
 /* END Navigation */
 
