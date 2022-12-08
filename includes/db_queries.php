@@ -167,7 +167,7 @@ function getUserDetails($username):array {
   $dbConn = initDb(); // Connect database connection
 
   $cols = "`username`, `firstname`, `surname`, `addressline1`, `addressline2`, `city`, `telephone`, `mobile`";
-  $query = "SELECT $cols FROM user WHERE username = '$username'";
+  $query = "SELECT $cols FROM `user` WHERE username = '$username'";
 
   $result = mysqli_query($dbConn, $query);
   $user = mysqli_fetch_assoc($result);
@@ -211,22 +211,46 @@ function updateUserDetails($username, $firstname, $surname, $addressline1, $addr
 /**
  * Updates user password in database
  *
- * 
+ * Returns true if successful, false if not
  *
- * @param [type] $username
- * @param [type] $old
- * @param [type] $new
- * @return void
+ * @param string $username
+ * @param string $old
+ * @param string $new
+ * @return int
  */
-function updatePassword($username, $old, $new) {
+function updatePassword($username, $old, $new):int {
   if (verifyUser($username, $old) == false) {
-    return false;
+    return false; // Old password is incorrect
   }
 
   $dbConn = initDb(); // Connect database connection
+
+  $query = "UPDATE `user` SET `password` = '$new' WHERE `username` = '$username' AND `password` = '$old'";
+
+  $result = mysqli_query($dbConn, $query);
+
+  mysqli_close($dbConn);
+  if ($result == true) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function deleteUser($user, $password) {
+  if (verifyUser($user, $password) == false) {
+    return false; // Old password is incorrect
+  }
 
+  $dbConn = initDb(); // Connect database connection
+
+  $query = "DELETE FROM `user` WHERE `username` = '$user' AND `password` = '$password'";
+
+  $result = mysqli_query($dbConn, $query);
+  if ($result == true) {
+    return true;
+  } else {
+    return false;
+  }
 }
 ?>

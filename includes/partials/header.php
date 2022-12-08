@@ -50,12 +50,16 @@ function getFullTitle() {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Styles -->
-  <link rel="stylesheet" href="./assets/css/normalize.css">
+  <!-- Normalize: Make elements consitent between different browsers -->
+  <!-- https://github.com/necolas/normalize.css -->
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+  
   <link rel="stylesheet" href="./assets/css/style.css">
+
 
   <!-- Scripts -->
   <script src="https://kit.fontawesome.com/87e2e714ed.js" crossorigin="anonymous"></script>
-  <script src="./assets/js/main.js" defer></script>
+  <script src="./assets/js/main.js"></script>
 
 </head>
 <body class="<?php echo htmlentities($bodyClass);?>">
