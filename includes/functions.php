@@ -90,7 +90,7 @@ function sessionMessage($body, $type = 0) {
 function formGetKeep($keys = null) {
   // Keeps keys that are used
   if ($keys === null) {
-    $keys = array('search', 'category', 'orderby', 'order', 'offset', 'page');
+    $keys = array('title', 'author', 'category', 'orderby', 'order', 'offset', 'page');
   }
 
   foreach($keys as $name) {

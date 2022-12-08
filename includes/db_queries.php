@@ -7,6 +7,8 @@
  *
  */
 
+
+// ======== Books ========
 /**
  * Fetch books from database
  *
@@ -21,7 +23,7 @@
  * @param int $limit
  * @param int $offset
  */
-function queryBooks($keyword, $category, $orderby, $order, $limit = 5, $offset = 0, $reservedby = null):mysqli_result {
+function queryBooks($title, $author, $category, $orderby, $order, $limit = 5, $offset = 0, $reservedby = null):mysqli_result {
   $dbConn = initDb(); // Connect database connection
 
   // SELECT ... FROM
@@ -36,7 +38,7 @@ function queryBooks($keyword, $category, $orderby, $order, $limit = 5, $offset =
   $query .= "LEFT JOIN user ON `reserved`.`username` = `user`.`username` ";
 
   // WHERE title or author AND category (AND reserved)
-  $query .= "WHERE (`title` LIKE '%$keyword%' OR `author` LIKE '%$keyword%') ";
+  $query .= "WHERE (`title` LIKE '%$title%' AND `author` LIKE '%$author%') ";
   $query .= "AND `category`.`details` LIKE '%$category%' ";
   if ($reservedby != null) {
     $query .= "AND `reserved`.`username` = '$reservedby' ";
@@ -121,7 +123,7 @@ function getCategories():array {
 /**
  * Returns count of books in database from a query
  */
-function countBooks($keyword, $category, $limit = 5, $offset = 0, $reservedby = null):int {
+function countBooks($title, $author, $category, $limit = 5, $offset = 0, $reservedby = null):int {
   $dbConn = initDb(); // Connect database connection
 
   $query = "SELECT 1 FROM book ";
@@ -134,15 +136,17 @@ function countBooks($keyword, $category, $limit = 5, $offset = 0, $reservedby = 
   $query .= "LEFT JOIN user ON `reserved`.`username` = `user`.`username` ";
 
   // WHERE
-  $query .= "WHERE (`title` LIKE '%$keyword%' OR `author` LIKE '%$keyword%') ";
+  $query .= "WHERE (`title` LIKE '%$title%' AND `author` LIKE '%$author%') ";
   $query .= "AND `category`.`details` LIKE '%$category%' ";
   if ($reservedby != null) {
     $query .= "AND `reserved`.`username` = '$reservedby' ";
   }
 
+  // If limit is set, add limit and offset
   if ($limit != null) {
     $query .= "LIMIT $limit OFFSET $offset";
   }
+
   $result = mysqli_query($dbConn, $query);
 
   $count = mysqli_num_rows($result);
@@ -150,5 +154,79 @@ function countBooks($keyword, $category, $limit = 5, $offset = 0, $reservedby = 
   mysqli_close($dbConn);
 
   return $count;
+}
+
+// ======== USER DETAILS ========
+/**
+ * Returns user details from database
+ *
+ * @param string $username
+ * @return array
+ */
+function getUserDetails($username):array {
+  $dbConn = initDb(); // Connect database connection
+
+  $cols = "`username`, `firstname`, `surname`, `addressline1`, `addressline2`, `city`, `telephone`, `mobile`";
+  $query = "SELECT $cols FROM user WHERE username = '$username'";
+
+  $result = mysqli_query($dbConn, $query);
+  $user = mysqli_fetch_assoc($result);
+
+  mysqli_close($dbConn);
+
+  return $user;
+}
+
+/**
+ * Function updates user details in database
+ *
+ * Columns: firstname, surname, addressline1, addressline2, city, telephone, mobile
+ *
+ * Returns true if successful, false if not
+ *
+ * @param string $username
+ * @param string $firstname
+ * @param string $surname
+ * @param string $addressline1
+ * @param string $addressline2
+ * @param string $city
+ * @param string $telephone
+ * @param string $mobile
+ * @return boolean
+ */
+function updateUserDetails($username, $firstname, $surname, $addressline1, $addressline2, $city, $telephone, $mobile):bool {
+  $dbConn = initDb(); // Connect database connection
+
+  $query = "UPDATE `user` SET `firstname` = '$firstname', `surname` = '$surname', `addressline1` = '$addressline1', `addressline2` = '$addressline2', `city` = '$city', `telephone` = '$telephone', `mobile` = '$mobile' WHERE `username` = '$username'";
+  $result = mysqli_query($dbConn, $query);
+
+  mysqli_close($dbConn);
+  if ($result == true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Updates user password in database
+ *
+ * 
+ *
+ * @param [type] $username
+ * @param [type] $old
+ * @param [type] $new
+ * @return void
+ */
+function updatePassword($username, $old, $new) {
+  if (verifyUser($username, $old) == false) {
+    return false;
+  }
+
+  $dbConn = initDb(); // Connect database connection
+}
+
+function deleteUser($user, $password) {
+
 }
 ?>

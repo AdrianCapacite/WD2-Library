@@ -10,7 +10,8 @@ if (!isLoggedIn()) {
 
 // get search parameters
 // if doesn't exist, set to default
-$search = $_GET['search'] ?? '';
+$title = $_GET['title'] ?? '';
+$author = $_GET['author'] ?? '';
 $category = $_GET['category'] ?? '';
 $orderby = $_GET['orderby'] ?? 'title';
 $order = $_GET['order'] ?? 'ASC';
@@ -58,7 +59,8 @@ if (isset($_POST['unreserve'])) {
 // ==== DATABASE QUERIES ====
 $resultBooks = array(
   'books' => queryBooks(
-    dbEscapeString($search),
+    dbEscapeString($title),
+    dbEscapeString($author),
     dbEscapeString($category),
     dbEscapeString($orderby),
     dbEscapeString($order),
@@ -67,14 +69,16 @@ $resultBooks = array(
     dbEscapeString($_SESSION['account']['username'])
   ),
   'totalCount' => countBooks(
-    dbEscapeString($search),
+    dbEscapeString($title),
+    dbEscapeString($author),
     dbEscapeString($category),
     null,
     null,
     dbEscapeString($_SESSION['account']['username'])
   ),
   'shownCount' => countBooks(
-    dbEscapeString($search),
+    dbEscapeString($title),
+    dbEscapeString($author),
     dbEscapeString($category),
     dbEscapeString($limit),
     dbEscapeString($page * $limit),
