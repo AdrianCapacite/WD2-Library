@@ -18,9 +18,16 @@ if (isLoggedIn()) {
 if (isset($_POST['register'])) {
 	$username = dbEscapeString($_POST['username'] ?? "");
 	$password = dbEscapeString($_POST['password'] ?? "");
+	$confirmPassword = dbEscapeString($_POST['confirm-password'] ?? "");
 
+	// Check if username and password are not empty
 	if (empty($username) || empty($password)) {
 		redirectMessage("register.php", "Please enter a username and password.", 3);
+	}
+
+	// Check if password and confirm password match
+	if ($password !== $confirmPassword) {
+		redirectMessage("register.php", "Passwords do not match.", 3);
 	}
 
 	register($username, $password);
@@ -44,6 +51,10 @@ if (isset($_POST['register'])) {
 				<div class="form__group">
 					<label for="password">Password</label>
 					<input type="password" name="password" id="password" placeholder="Password">
+				</div>
+				<div class="form__group">
+					<label for="password">Confim Password</label>
+					<input type="password" name="confirm-password" id="confirm-password" placeholder="Confirm Password">
 				</div>
 				<div class="form_group form__group">
 					<p>Already registered? <a href="login.php">Login here.</a></p>

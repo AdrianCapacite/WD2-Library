@@ -15,14 +15,18 @@
  *
  * @param string $username
  * @param string $password
+ * @param string $redirect (optional) Redirect to this page after login
  * @return void
  */
-function login($username, $password):void {
+function login($username, $password, $redirect = null):void {
 	// Check if username and password is correct
 	// If correct then add user to session and redirect to index.php
 	// else redirect to login.php
 	if (verifyUser($username, $password) === 2) {
 		$_SESSION['account'] = array('username' => $username, 'password' => $password);
+		if ($redirect) {
+			redirectTo($redirect);
+		}
 		redirectTo("./index.php");
 		return;
 	} else {
@@ -60,6 +64,13 @@ function register($username, $password):void {
 		return;
 	}
 
+	// Check if password is 6
+	if (strlen($password) != 6) {
+		sessionMessage("Password must be 6 characters", 3);
+		redirectTo("./register.php");
+		return;
+	}
+
 	// Add user to database
 	$dbConn = initDb(); // Connect to database
 	$query = "INSERT INTO user (username, password) VALUES ('$username', '$password')";
@@ -69,8 +80,8 @@ function register($username, $password):void {
 	// If the user is added sucessfully then login, else stay in register
 	if ($result) {
 		// $_SESSION['info'] = "User added sucessfully";
-		sessionMessage("User added sucessfully, please update your membership details", 1);
-		login($username, $password);
+		sessionMessage("User registered sucessfully, please update your membership details", 1);
+		login($username, $password, "./membership.php");
 		return;
 	} else {
 		// $_SESSION['authError'] = "Could not register user";

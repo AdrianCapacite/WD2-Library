@@ -19,6 +19,7 @@ if (isset($_POST['login'])) {
 	if (empty($username) || empty($password)) {
 		redirectMessage("login.php", "Please enter a username and password.", 3);
 	}
+
 	login($username, $password);
 }
 ?>

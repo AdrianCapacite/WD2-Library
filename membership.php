@@ -33,6 +33,14 @@ if (isset($_POST['update-details'])) {
 		}
 	}
 
+	// Check if mobile or telephone is 10 digits
+	if (strlen($mobile) !== 10) {
+		redirectMessage("./membership.php", "Mobile number must be 10 digits.", 3);
+	}
+	if (strlen($telephone) !== 10 && !empty($telephone)) {
+		redirectMessage("./membership.php", "Telephone number must be 10 digits.", 3);
+	}
+
 	// Update user details
 	$result = updateUserDetails($_SESSION['account']['username'], $firstname, $surname, $addressline1, $addressline2, $city, $telephone, $mobile);
 
