@@ -1,4 +1,10 @@
 <?php
+/**
+ * Library Website Database
+ * Author: Adrian Thomas Capacite C21348423
+ *
+ * Gathers all the necessary files and checks if user is logged in
+ */
 // Includes all the necessary files
 session_start();
 
@@ -9,12 +15,6 @@ require_once './includes/db.php';
 require_once './includes/db_queries.php';
 
 // Check database connection
+checkDatabaseConnection();
 
-
-// Check if user is logged in and redirect to login page if not
-
-
-// Debugging
-// echo "<pre style=\"font-size: 12px; float: right;\">";
-// echo "</pre>";
 ?>

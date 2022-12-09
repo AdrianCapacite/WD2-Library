@@ -1,26 +1,22 @@
 <?php
-// ======== GLOBALS ========
-
-// ======== UTILITIES ========
+/**
+ * Library Website Database
+ * Author: Adrian Thomas Capacite C21348423
+ *
+ * ======== FUNCTIONS ========
+ *
+ */
 
 /**
  * Fetches top level property from config file
  *
  * @param string $property
- * @return string
+ * @return array
  */
 function getConfig($property):array {
-  return (include('./conf/config.php'))[$property];
+	return (include('./conf/config.php'))[$property];
 }
 
-/**
- * Returns current page uri
- *
- * @return void
- */
-function currentPage() {
-  return $_SERVER["PHP_SELF"];
-}
 
 /**
  * Uses header("Location: ...") to redirect to a page
@@ -29,20 +25,9 @@ function currentPage() {
  * @param string $msg (optional) Message to display on redirected page
  * @return void
  */
-function redirectTo($uri){
-  header( "Location: {$uri}" );
-  exit;
-}
-
-/**
- * Redirect to error page with error message
- *
- * @param int $errid
- * @return void
- */
-function redirectError($errid){
-  $_SESSION['error'] = array('date' => date("d/m/y H:i:s"), 'message' => $errid);
-  redirectTo('./error.php');
+function redirectTo($uri):void {
+	header( "Location: {$uri}" );
+	exit;
 }
 
 /**
@@ -55,18 +40,19 @@ function redirectError($errid){
  * @param int $type
  * @return void
  */
-function redirectMessage($uri, $body, $type) {
-  sessionMessage($body, $type);
-  redirectTo($uri);
+function redirectMessage($uri, $body, $type):void {
+	sessionMessage($body, $type);
+	redirectTo($uri);
 }
 
 /**
  * Creates a JavaScript console log
  *
  * @param string $message
+ * @return void
  */
-function consoleLog($message){
-  echo "<script>console.log('PHP: " . htmlentities($message) ."');</script>";
+function consoleLog($message):void {
+	echo "<script>console.log('PHP: " . htmlentities($message) ."');</script>";
 }
 
 /**
@@ -78,73 +64,104 @@ function consoleLog($message){
  * @param integer $type = 0
  * @return void
  */
-function sessionMessage($body, $type = 0) {
-  $types = array('info', 'success', 'warning', 'error');
-  $_SESSION['msg'] = array(
-    'body' => $body,
-    'type' => $types[$type]
-  );
-  return;
+function sessionMessage($body, $type = 0):void {
+	$types = array('info', 'success', 'warning', 'error');
+	$_SESSION['msg'] = array(
+		'body' => $body,
+		'type' => $types[$type]
+	);
+	return;
 }
 
-function formGetKeep($keys = null) {
-  // Keeps keys that are used
-  if ($keys === null) {
-    $keys = array('title', 'author', 'category', 'orderby', 'order', 'offset', 'page');
-  }
+/**
+ * Fetches url parameters and creates hidden inputs
+ * @param mixed $keys (optional) Array of keys to keep, if null then keep default keys
+ * @return void
+ */
+function formGetKeep($keys = null):void {
+	// Default keys to keep if none are specified
+	if ($keys === null) {
+		$keys = array('title', 'author', 'category', 'orderby', 'order', 'offset', 'page');
+	}
 
-  foreach($keys as $name) {
-  if(!isset($_GET[$name])) {
-    continue;
-  }
-  $value = htmlspecialchars($_GET[$name]);
-  $name = htmlspecialchars($name);
-  echo '<input type="hidden" name="'. $name .'" value="'. $value .'">';
-}
-}
-
-function createPagination($page, $total, $current) {
-  ?>
-  <form action="<?php echo htmlentities($page) ?>" method="get" class="pagination">
-    <?php
-    formGetKeep(array('search', 'category', 'orderby', 'order', 'offset'));
-
-    // Previous button if not on first page
-    if($current > 0) {
-      echo "<button type='submit' name='page' value='". ($current - 1) ."'>Previous</button>";
-    }
-
-    // Show current and total pages
-    echo '<span>Page '. ($current + 1) .' of '. $total .'</span>';
-    // Next button if not on last page
-    if ($current < $total - 1) {
-      echo "<button type='submit' name='page' value='". ($current + 1) ."'>Next</button>";
-    }
-    ?>
-  </form>
-  <?php
+	// Loop through keys and create hidden inputs
+	foreach($keys as $name) {
+	if(!isset($_GET[$name])) {
+		continue;
+	}
+	$value = htmlspecialchars($_GET[$name]);
+	$name = htmlspecialchars($name);
+	echo '<input type="hidden" name="'. $name .'" value="'. $value .'">';
+	}
 }
 
-function createQueryCount($total, $offset, $limit) {
-  $start = $offset + 1;
-  $end = $offset + $limit;
-  if ($end > $total) {
-    $end = $total;
-  }
-  echo '<p>Showing '. $start .'-'. $end .' of '. $total .' results</p>';
+/**
+ * Creates a pagination form
+ *
+ * @param string $page
+ * @param integer $total
+ * @param integer $current
+ * @return void
+ */
+function createPagination($page, $total, $current):void {
+	// Create form with hidden inputs to keep url parameters
+	echo '<form action="'. htmlentities($page) .'" method="get" class="pagination">';
+	formGetKeep(array('search', 'category', 'orderby', 'order', 'offset'));
+
+	// Previous button if not on first page
+	if($current > 0) {
+		echo "<button type='submit' name='page' value='". ($current - 1) ."'>Previous</button>";
+	} else {
+		echo "<button type='submit' name='page' value='". ($current - 1) ."' disabled>Previous</button>";
+	}
+
+	// Show current and total pages
+	echo '<span>Page '. ($current + 1) .' of '. $total .'</span>';
+
+	// Next button if not on last page
+	if ($current < $total - 1) {
+		echo "<button type='submit' name='page' value='". ($current + 1) ."'>Next</button>";
+	} else {
+		echo "<button type='submit' name='page' value='". ($current + 1) ."' disabled>Next</button>";
+	}
+	echo '</form>';
 }
 
-function showSessionMessage() {
-  if (!isset($_SESSION['msg'])) {
-    return;
-  }
-  $msg = $_SESSION['msg'];
-  unset($_SESSION['msg']);
-  ?>
-  <div class="msg-box <?php echo htmlentities($msg['type']); ?>">
-    <p><?php echo htmlentities($msg['body']); ?></p>
-  </div>
-  <?php
+/**
+ * Echos number of results shown on page and total number of results
+ *
+ * @param int $total
+ * @param int $offset
+ * @param int $limit
+ * @return void
+ */
+function createQueryCount($total, $offset, $limit):void {
+	$start = $offset + 1;
+	$end = $offset + $limit;
+	if ($end > $total) {
+		$end = $total;
+	}
+	echo '<p>Showing '. $start .'-'. $end .' of '. $total .' results</p>';
+}
+
+/**
+ * Fetches a message from $_SESSION['msg'] and displays it
+ * @return void
+ */
+function showSessionMessage():void {
+	// Check if message exists then unset it
+	if (!isset($_SESSION['msg'])) {
+		return;
+	}
+	$msg = $_SESSION['msg'];
+	unset($_SESSION['msg']);
+
+	// Display message
+	?>
+	<div class="msg-box <?php echo htmlentities($msg['type']); ?>">
+		<p><?php echo htmlentities($msg['body']); ?></p>
+	</div>
+	<?php
 }
 
 // Book functions
@@ -153,33 +170,38 @@ function showSessionMessage() {
  *
  * Returns: 0 = Available, 1 = Reserved, 2 = Reserved by user
  *
- * @param [type] $book
- * @return integer
+ * @param array $book
+ * @return int
  */
 function getBookStatus($book):int {
-  if ($book['reserved'] == 'N') {
-    return 0; // Available
-  }
+	if ($book['reserved'] == 'N') {
+		return 0; // Available
+	}
 
-  // It is implied reserved == 'Y' from here
-  if ($book['reservedby'] == $_SESSION['account']['username']) {
-    return 2; // Reserved by user
-  }
+	// It is implied reserved == 'Y' from here
+	if ($book['reservedby'] == $_SESSION['account']['username']) {
+		return 2; // Reserved by user
+	}
 
-  return 1;
+	return 1;
 }
 
+/**
+ * Reads an associative array describing a book and returns a string of who reserved it
+ * @param array $book
+ * @return string|null
+ */
 function getReservedBy($book):string | null {
-  if ($book['reserved'] == 'N') {
-    return '';
-  }
+	if ($book['reserved'] == 'N') {
+		return '';
+	}
 
-  // It is implied reserved == 'Y' from here
-  if ($book['reservedby'] == $_SESSION['account']['username']) {
-    return 'You';
-  }
+	// It is implied reserved == 'Y' from here
+	if ($book['reservedby'] == $_SESSION['account']['username']) {
+		return 'You';
+	}
 
-  return $book['reservedby'];
+	return $book['reservedby'];
 }
 
 ?>
