@@ -48,7 +48,7 @@ function redirectError($errid){
 /**
  * Redirect to page with message, a page will display message however it wants
  *
- * type: 0 = info, 1 = warning, 2 = error
+ * type: 0 = info (default), 1 = success, 2 = warning, 3 = error
  *
  * @param string $uri
  * @param string $body

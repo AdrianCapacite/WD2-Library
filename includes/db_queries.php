@@ -211,7 +211,7 @@ function updateUserDetails($username, $firstname, $surname, $addressline1, $addr
 /**
  * Updates user password in database
  *
- * Returns true if successful, false if not
+ * Returns 0 if password is incorrect, 1 if successful, 2 if not successful
  *
  * @param string $username
  * @param string $old
@@ -220,7 +220,7 @@ function updateUserDetails($username, $firstname, $surname, $addressline1, $addr
  */
 function updatePassword($username, $old, $new):int {
   if (verifyUser($username, $old) == false) {
-    return false; // Old password is incorrect
+    return 0; // Old password is incorrect
   }
 
   $dbConn = initDb(); // Connect database connection
@@ -232,9 +232,9 @@ function updatePassword($username, $old, $new):int {
   mysqli_close($dbConn);
   if ($result == true) {
     $_SESSION['account']['password'] = $new;
-    return true;
+    return 1; // Password updated
   } else {
-    return false;
+    return 2; // Unable to update password
   }
 }
 

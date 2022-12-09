@@ -4,7 +4,11 @@ $navVisible = true;
 require_once './includes/loader.php';
 require_once './includes/partials/header.php';
 
+// Check if user credentials are valid
+// if not, restart session and redirect to login page
 if (!isLoggedIn()) {
+  session_destroy();
+  session_start();
   header("Location: ./login.php");
 }
 

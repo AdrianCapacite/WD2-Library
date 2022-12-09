@@ -37,7 +37,7 @@ function logout() {
   session_destroy();
   session_start();
   sessionMessage("Logged out", 1);
-  header("Location: ./login.php");
+  redirectTo("./login.php");
 }
 
 /**
