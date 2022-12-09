@@ -41,7 +41,7 @@
 				}
 				?>
 			</p>
-			<form action="./books.php" method="post">
+			<form action="<?php echo basename($_SERVER['PHP_SELF']); ?>" method="post">
 				<?php
 				formGetKeep();
 				switch (getBookStatus($book)) {

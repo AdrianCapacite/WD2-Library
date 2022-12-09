@@ -53,9 +53,9 @@ if (isset($_POST['unreserve'])) {
 
 	$result = unreserveBook($isbn, $username);
 	if ($result) {
-		redirectMessage("./books.php", "Book unreserved", 1);
+		redirectMessage("./reserved-books.php", "Book unreserved", 1);
 	} else {
-		redirectMessage("./books.php", "Book could not be unreserved", 3);
+		redirectMessage("./reserved-books.php", "Book could not be unreserved", 3);
 	}
 }
 
