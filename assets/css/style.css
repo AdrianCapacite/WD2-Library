@@ -77,9 +77,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Paragraphs */
-p, span, a {
+p, span {
     font-family: var(--font-primary);
     color: inherit;
+}
+a {
+    color: var(--link-color);
+    font-family: var(--font-primary);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--accent-color-2);
+    text-decoration: underline;
 }
 
 /* Form */
@@ -156,6 +165,7 @@ footer > div {
     position: absolute;
     background-color: var(--primary-color);
     min-width: 160px;
+    white-space: nowrap;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 .dropdown__toggle:checked ~ .dropdown__label::after {
@@ -304,6 +314,14 @@ header .msg-box {
     align-items: center;
     justify-content: left;
 }
+.form__required::before {
+    content: "*";
+    position: absolute;
+    transform: translateX(-100%);
+    color: var(--error-color);
+    font-size: 0.8rem;
+    padding-left: 0.5rem;
+}
 form input, form select, form textarea {
     /* width: 100%; */
     padding: 0.5rem;
@@ -443,7 +461,7 @@ form button:disabled {
 .details {
     box-shadow: var(--shadow);
     border-radius: var(--border-radius);
-    padding: .5rem;
+    padding: 1rem;
 }
 .details__form {
     display: flex;

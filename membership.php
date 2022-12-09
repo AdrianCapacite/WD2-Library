@@ -4,20 +4,34 @@ $navVisible = true;
 require_once './includes/loader.php';
 require_once './includes/partials/header.php';
 
+// Check if user credentials are valid
+// if not, restart session and redirect to login page
 if (!isLoggedIn()) {
+  session_destroy();
+  session_start();
   header("Location: ./login.php");
 }
 
-// If user submits user details update form
+// Check if user has submitted update-details form
+// and check if
 if (isset($_POST['update-details'])) {
   // Fetch user details
-  $firstname = dbEscapeString($_POST['firstname']);
-  $surname = dbEscapeString($_POST['surname']);
-  $addressline1 = dbEscapeString($_POST['addressline1']);
-  $addressline2 = dbEscapeString($_POST['addressline2']);
-  $city = dbEscapeString($_POST['city']);
-  $telephone = dbEscapeString($_POST['telephone']);
-  $mobile = dbEscapeString($_POST['mobile']);
+  $firstname = dbEscapeString($_POST['firstname'] ?? "");
+  $surname = dbEscapeString($_POST['surname'] ?? "");
+  $addressline1 = dbEscapeString($_POST['addressline1'] ?? "");
+  $addressline2 = dbEscapeString($_POST['addressline2'] ?? "");
+  $city = dbEscapeString($_POST['city'] ?? "");
+  $telephone = dbEscapeString($_POST['telephone'] ?? "");
+  $mobile = dbEscapeString($_POST['mobile'] ?? "");
+
+  $required = array($firstname, $surname, $addressline1, $city, $mobile);
+
+  // Check if required fields are empty
+  foreach ($required as $field) {
+    if (empty($field)) {
+      redirectMessage("./membership.php", "Please fill in all required fields marked with *.", 3);
+    }
+  }
 
   // Update user details
   $result = updateUserDetails($_SESSION['account']['username'], $firstname, $surname, $addressline1, $addressline2, $city, $telephone, $mobile);
@@ -35,13 +49,31 @@ if (isset($_POST['update-password'])) {
   $currentPassword = dbEscapeString($_POST['current-password']);
   $newPassword = dbEscapeString($_POST['new-password']);
 
+  // Check if required fields are empty
+  if (empty($currentPassword) || empty($newPassword)) {
+    redirectMessage("./membership.php", "Please enter both old password and new password", 3);
+  }
+
+  // Cech if new password is the same as old password
+  if ($currentPassword === $newPassword) {
+    redirectMessage("./membership.php", "New password cannot be the same as old password.", 3);
+  }
+
   // Update user password
   $result = updatePassword($_SESSION['account']['username'], $currentPassword, $newPassword);
 
-  if ($result) {
+  switch ($result) {
+    case '0':
+    redirectMessage("./membership.php", "Old password is incorrect.", 3);
+    break;
+
+    case '1':
     redirectMessage("./membership.php", "Password updated.", 1);
-  } else {
+    break;
+
+    case '2':
     redirectMessage("./membership.php", "Password could not be updated.", 3);
+      break;
   }
 }
 
@@ -56,19 +88,18 @@ require_once './includes/partials/header.php';
     <h2>Member Details</h2>
     <form method="post" action="membership.php" class="details__form" id="user-details">
       <div class="form__group--h">
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" placeholder="Username" value="<?php echo htmlentities($userDetails['username']) ?>" disabled>
+        <p>Username: <?php echo htmlentities($_SESSION['account']['username']) ?></p>
       </div>
       <div class="form__group--h">
-        <label for="firstname">First Name: </label>
+        <label for="firstname" class="form__required">First Name: </label>
         <input type="text" name="firstname" id="firstname" placeholder="First Name" value="<?php echo htmlentities($userDetails['firstname']) ?>" disabled>
-        <label for="surname">Surname: </label>
+        <label for="surname" class=form__required"">Surname: </label>
         <input type="text" name="surname" id="surname" placeholder="Surname" value="<?php echo htmlentities($userDetails['surname']) ?>" disabled>
       </div>
       <!-- Address -->
       <table>
         <tr>
-          <td><label for="addressline1">Address Line 1:</label></td>
+          <td><label for="addressline1" class="form__required">Address Line 1:</label></td>
           <td>
             <input type="text" name="addressline1" id="addressline1" placeholder="Street" value="<?php echo htmlentities($userDetails['addressline1']) ?>" disabled>
           </td>
@@ -80,7 +111,7 @@ require_once './includes/partials/header.php';
           </td>
         </tr>
         <tr>
-          <td><label for="city">City: </label></td>
+          <td><label for="city" class="form__required">City: </label></td>
           <td>
             <input type="text" name="city" id="city" placeholder="City" value="<?php echo htmlentities($userDetails['city']) ?>" disabled>
           </td>
@@ -89,7 +120,7 @@ require_once './includes/partials/header.php';
       <!-- END Address -->
 
       <div class="form__group--h">
-        <label for="mobile">Mobile: </label>
+        <label for="mobile" class="form__required">Mobile: </label>
         <input type="text" name="mobile" id="mobile" placeholder="Mobile" value="<?php echo htmlentities($userDetails['mobile']) ?>" disabled>
         <label for="telephone">Telephone: </label>
         <input type="text" name="telephone" id="telephone" placeholder="Telephone" value="<?php echo htmlentities($userDetails['telephone']) ?>" disabled>

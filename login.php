@@ -9,10 +9,17 @@ if (isLoggedIn()) {
   header("Location: ./");
 }
 
-// When user submits login form, attempt to login
+// If user has submitted login form and username and password are not empty
+// then attempt to login user
 if (isset($_POST['login'])) {
-  login(dbEscapeString($_POST['username'] ?? null),
-        dbEscapeString($_POST['password'] ?? null));
+  $username = dbEscapeString($_POST['username'] ?? "");
+  $password = dbEscapeString($_POST['password'] ?? "");
+
+  // Check if username and password are not empty
+  if (empty($username) || empty($password)) {
+    redirectMessage("login.php", "Please enter a username and password.", 3);
+  }
+  login($username, $password);
 }
 ?>
 
@@ -29,11 +36,11 @@ if (isset($_POST['login'])) {
       <form action="login.php" method="post" class="auth__form">
         <div class="form__group">
           <label for="username">Username</label>
-          <input type="text" name="username" id="username" placeholder="Username" required>
+          <input type="text" name="username" id="username" placeholder="Username">
         </div>
         <div class="form__group">
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" placeholder="Password" required>
+          <input type="password" name="password" id="password" placeholder="Password">
         </div>
         <div class="form__group">
           <p>Not registered? <a href="register.php">Register here.</a></p>
