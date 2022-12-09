@@ -24,12 +24,14 @@ $page = $_GET['page'] ?? 0;
 
 // display search term
 function displaySearchTerm() {
-	global $search, $category;
-	$term = ($search === '') ? 'everything' : $search;
-	$category = ($category === '') ? 'all' : $category;
+	global $title, $author, $category;
+	$title = ($title === '') ? 'Everything' : $title;
+	$author = ($author === '') ? 'All Authors' : $author;
+	$category = ($category === '') ? 'All' : $category;
 
-	echo "search results for <em>" . htmlentities($term) . "</em>";
-	echo " in <em>" . htmlentities($category) . "</em> categories";
+	echo "search results for <em>" . htmlentities($title) . "</em>";
+	echo " by <em>" . htmlentities($author) . "</em>";
+	echo " in <em>" . htmlentities($category) . "</em>";
 }
 
 // reserve book
